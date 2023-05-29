@@ -39,6 +39,11 @@ def upload():
     for i in range(12):
         pyautogui.hotkey('backspace')
 
+    file = open("currentclip.txt", "r")
+    channelName = file.read()
+    file.close()
+    pyautogui.typewrite(f"{channelName} ")
+
     for hashtag in random_hashtags:
         pyautogui.typewrite(f"#{hashtag}")
         time.sleep(0.8)

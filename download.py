@@ -26,6 +26,9 @@ def main(filename):
 		input("The URL is invalid!")
 		main()
 	print(f'Downloading "{response_json["data"]["title"]}" by {response_json["data"]["info"]["clip_author"]}...')
+	file = open("currentclip.txt", "w")
+	file.write(response_json["data"]["info"]["author"].capitalize())
+	file.close()
 	clip_url = response_json["data"]["info"]["play_url"]
 	file_name = f'{filename}.mp4'#f'{response_json["data"]["title"]}.mp4'
 	valid_file_name = re.sub(r'\\|\/|:|\*|\?|"|<|>|\|', "_", file_name)
