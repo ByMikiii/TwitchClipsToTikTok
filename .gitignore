@@ -1,2 +1,7 @@
-
 currentclip.txt
+__pycache__/*
+__pycache__
+*.mp4
+clip.mp4
+clip_edited.mp4
+*.pyc

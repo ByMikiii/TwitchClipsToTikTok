@@ -10,17 +10,19 @@ def upload():
 
     browser = webbrowser.get("C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe %s")
 
-    hashtags = ['fyp', 'foryou', 'funny', 'trending', 'viral', 'foryoupage', 'twitch']
+    hashtags = ['fyp', 'foryou', 'foryoupage']
 
     # Select multiple unique random hashtags from the array
-    num_hashtags = 3 
+    num_hashtags = 2
     random_hashtags = random.sample(hashtags, num_hashtags)
 
     browser.open_new_tab('https://www.tiktok.com/upload?lang=en')
-    time.sleep(5)
+    time.sleep(6)
     pyautogui.leftClick(900, 500)
 
-    pyautogui.leftClick(425, 50)
+    pyautogui.hotkey("win", 'left')
+
+    pyautogui.leftClick(393, 969)
 
     pyautogui.typewrite('C:\\Users\\Bymikiii\\Development\\TwitchClipsToTikTok\\clip_edited.mp4')
 
@@ -39,10 +41,10 @@ def upload():
     for i in range(12):
         pyautogui.hotkey('backspace')
 
-    file = open("currentclip.txt", "r")
-    channelName = file.read()
-    file.close()
-    pyautogui.typewrite(f"{channelName} ")
+    # file = open("currentclip.txt", "r")
+    # channelName = file.read()
+    # file.close()
+    # pyautogui.typewrite(f"{channelName} ")
 
     for hashtag in random_hashtags:
         pyautogui.typewrite(f"#{hashtag}")
