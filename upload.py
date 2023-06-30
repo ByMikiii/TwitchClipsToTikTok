@@ -20,9 +20,15 @@ def upload():
     time.sleep(6)
     pyautogui.leftClick(900, 500)
 
+    time.sleep(0.5)
+
     pyautogui.hotkey("win", 'left')
 
+    time.sleep(0.5)
+
     pyautogui.leftClick(393, 969)
+
+    time.sleep(0.5)
 
     pyautogui.typewrite('C:\\Users\\Bymikiii\\Development\\TwitchClipsToTikTok\\clip_edited.mp4')
 
