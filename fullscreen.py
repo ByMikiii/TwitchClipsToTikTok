@@ -17,4 +17,4 @@ def edit(filename):
 
     composite_clip = CompositeVideoClip([template.set_duration(duration), resized_clip.set_pos((x_pos, y_pos)).set_duration(duration)])
 
-    composite_clip.write_videofile(f"{filename}_edited.mp4", threads=8, codec="libx264")
+    composite_clip.write_videofile(f".mp4", threads=8, codec="libx264")

@@ -18,8 +18,7 @@ def download_file(url, filename):
 		pbar.close()
 	return filename
 
-def main(filename):
-	clip_url = input("Enter the Twitch Clip URL: ")
+def main(filename, clip_url):
 	response = requests.get(f"https://twiclips.com/twitch-download/clip?clip_url={clip_url}")
 	response_json = response.json()
 	if response_json["data"] == None:

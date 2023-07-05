@@ -6,7 +6,7 @@ def edit(filename):
     input_file = f"{filename}.mp4"
 
     # Define the output video file path
-    output_file = f"{filename}_edited.mp4"
+    output_file = f".mp4"
 
     # Load the input video clip
     video_clip = VideoFileClip(input_file)
