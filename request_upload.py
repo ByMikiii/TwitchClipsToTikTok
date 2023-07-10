@@ -16,6 +16,7 @@ def request_upload(clip_url, video_style):
     hashtags = ['#foryou','#foryoupage', '#fyp', '#fy']
 
     tag1 = random.choice(hashtags)
+    hashtags.remove(tag1)
     tag2 = random.choice(hashtags)
     print(f"tags:{tag1} {tag2}")
 
@@ -28,3 +29,5 @@ def request_upload(clip_url, video_style):
                 break
         except Exception as e:
             print(f"An error occurred: {e}")
+            
+request_upload('https://clips.twitch.tv/AttractiveIgnorantHamAsianGlow-pbf5QLZeomZID8Ws', 1)

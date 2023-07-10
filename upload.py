@@ -23,6 +23,7 @@ from tiktok_uploader.browsers import get_browser
 from tiktok_uploader.auth import AuthBackend
 from tiktok_uploader import config, logger
 from tiktok_uploader.utils import bold, green
+from selenium.webdriver.chrome.options import Options
 
 
 def upload_video(filename=None, description='', username='',
@@ -93,7 +94,10 @@ def upload_videos(videos: list = None, auth: AuthBackend = None, browser='chrome
     if not browser_agent: # user-specified browser agent
         logger.debug('Create a %s browser instance %s', browser,
                     'in headless mode' if headless else '')
-        driver = webdriver.Chrome()
+
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        driver = webdriver.Chrome(options=chrome_options)
     else:
         logger.debug('Using user-defined browser agent')
         driver = browser_agent

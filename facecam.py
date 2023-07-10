@@ -19,7 +19,7 @@ def edit(filename):
 
     for frame in video_clip.iter_frames():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=3)
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.7, minNeighbors=6)
 
         if len(faces) > 0:
             x, y, w, h = faces[0]
@@ -31,7 +31,7 @@ def edit(filename):
             zoom_y = max(0, y - offset_y)
             zoom_w = min(video_clip.size[0], w + 2 * offset_x)
             zoom_h = min(video_clip.size[1], h + 2 * offset_y)
-
+            
             break  # Exit the loop after the first frame with a detected face
 
     if zoom_x is None or zoom_y is None or zoom_w is None or zoom_h is None:
