@@ -10,6 +10,7 @@ from os.path import abspath, exists
 from typing import List
 import time
 import os
+import random
 
 from selenium.webdriver.common.by import By
 
@@ -25,6 +26,24 @@ from tiktok_uploader import config, logger
 from tiktok_uploader.utils import bold, green
 from selenium.webdriver.chrome.options import Options
 
+def upload():
+    hashtags = ['#foryou','#foryoupage', '#fyp', '#fy']
+
+    tag1 = random.choice(hashtags)
+    hashtags.remove(tag1)
+    tag2 = random.choice(hashtags)
+    print(f"tags:{tag1} {tag2}")
+
+    while True:
+        try:
+            upload_video('.mp4', f"{tag1} {tag2} ", cookies='cookies.txt', headless=True, comment=True, stitch=True, duet=True)
+            file_name = '.mp4'
+            file_path = os.path.join(os.getcwd(), file_name)
+            if not os.path.isfile(file_path):
+                return("Clip posted successfully!")
+                break
+        except Exception as e:
+            return(f"An error occurred: {e}")
 
 def upload_video(filename=None, description='', username='',
                  password='', cookies='', sessionid=None, cookies_list=None, *args, **kwargs):
@@ -369,12 +388,13 @@ def _post_video(driver) -> None:
     file_name = '.mp4'
     file_path = os.path.join(os.getcwd(), file_name)
     file_path2 = os.path.join(os.getcwd(), "clip.mp4")
+    file_path2 = os.path.join(os.getcwd(), "cliptest.mp4")
 
     if os.path.isfile(file_path):
         os.remove(file_path)
         os.remove(file_path2)
         print(f"Files have been destroyed.")
-
+    return 'Video posted successfully'
 # HELPERS
 
 def _check_valid_path(path: str) -> bool:

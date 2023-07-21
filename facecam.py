@@ -19,8 +19,7 @@ def edit(filename):
 
     for frame in video_clip.iter_frames():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.7, minNeighbors=6)
-
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.4, minNeighbors=5, minSize=(40, 40), maxSize=(250, 250))
         if len(faces) > 0:
             x, y, w, h = faces[0]
             face_width = w
@@ -74,4 +73,8 @@ def edit(filename):
 
     final_clip = CompositeVideoClip([template.set_duration(resized_facecam.duration), final_clip.set_pos((0, 0)), resized_facecam.set_pos((0, 1300))])
 
-    final_clip.write_videofile(output_file, threads=2, codec="libx264")
+    final_clip.write_videofile(output_file, threads=6, codec="libx264")
+
+    final_clip = final_clip.set_duration(2).without_audio()
+
+    final_clip.write_videofile('cliptest.mp4', threads=6, codec="libx264")

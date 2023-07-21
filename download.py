@@ -22,8 +22,7 @@ def main(filename, clip_url):
 	response = requests.get(f"https://twiclips.com/twitch-download/clip?clip_url={clip_url}")
 	response_json = response.json()
 	if response_json["data"] == None:
-		input("The URL is invalid!")
-		main()
+		return("The URL is invalid!")
 	print(f'Downloading "{response_json["data"]["title"]}" by {response_json["data"]["info"]["clip_author"]}...')
 	file = open("currentclip.txt", "w")
 	file.write(response_json["data"]["info"]["author"].capitalize())
@@ -32,4 +31,4 @@ def main(filename, clip_url):
 	file_name = f'{filename}.mp4'#f'{response_json["data"]["title"]}.mp4'
 	valid_file_name = re.sub(r'\\|\/|:|\*|\?|"|<|>|\|', "_", file_name)
 	download_file(response_json["data"]["info"]["play_url"], valid_file_name)
-	print("Downloaded complete!")
+	return("Download complete!")
