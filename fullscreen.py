@@ -1,4 +1,22 @@
 from moviepy.editor import *
+import os
+import shutil
+
+def copy_video_file(original_path, new_name):
+    try:
+        # Extract the directory and filename from the original path
+        directory, filename = os.path.split(original_path)
+        
+        # Create the new path with the new name in the same directory
+        new_path = os.path.join(directory, new_name)
+        
+        # Copy the file
+        shutil.copy2(original_path, new_path)
+        print(f"File '{original_path}' copied to '{new_path}' successfully.")
+    except FileNotFoundError:
+        print(f"Error: File '{original_path}' not found.")
+    except PermissionError:
+        print(f"Error: Permission denied to copy file '{original_path}'.")
 
 def edit(filename):
     clip = VideoFileClip(f"{filename}.mp4")
@@ -19,6 +37,9 @@ def edit(filename):
 
     composite_clip.write_videofile(f".mp4", threads=6, codec="libx264")
 
-    composite_clip = composite_clip.set_duration(2).without_audio()
+    # composite_clip = composite_clip.set_duration(2).without_audio()
 
-    composite_clip.write_videofile('cliptest.mp4', threads=6, codec="libx264")
+    # composite_clip.write_videofile('cliptest.mp4', threads=6, codec="libx264")
+    original_file_path = ".mp4"
+    new_file_name = "v.mp4"
+    copy_video_file(original_file_path, new_file_name)

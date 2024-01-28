@@ -1,34 +1,27 @@
-from tqdm import tqdm
+import subprocess
+import streamlink
 import requests
-import re
 
-def download_file(url, filename):
-	headers = {
-		"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
-	}
-	response = requests.get(url, headers=headers, stream=True)
+def download_clip(url, filename):
+    if 'twitch' in url:
+        quality='best'
+        streams = streamlink.streams(url)
 
-	with open(filename, 'wb') as f:
-		pbar = tqdm(unit="B", unit_scale=True, unit_divisor=1024, total=int(response.headers['Content-Length']))
-		pbar.clear()  #  clear 0% info
-		for chunk in response.iter_content(chunk_size=1024):
-			if chunk: # filter out keep-alive new chunks
-				pbar.update(len(chunk))
-				f.write(chunk)
-		pbar.close()
-	return filename
+        if quality not in streams:
+            print(f"Error: Quality '{quality}' not available for the given URL.")
+            return
 
-def main(filename, clip_url):
-	response = requests.get(f"https://twiclips.com/twitch-download/clip?clip_url={clip_url}")
-	response_json = response.json()
-	if response_json["data"] == None:
-		return("The URL is invalid!")
-	print(f'Downloading "{response_json["data"]["title"]}" by {response_json["data"]["info"]["clip_author"]}...')
-	file = open("currentclip.txt", "w")
-	file.write(response_json["data"]["info"]["author"].capitalize())
-	file.close()
-	clip_url = response_json["data"]["info"]["play_url"]
-	file_name = f'{filename}.mp4'#f'{response_json["data"]["title"]}.mp4'
-	valid_file_name = re.sub(r'\\|\/|:|\*|\?|"|<|>|\|', "_", file_name)
-	download_file(response_json["data"]["info"]["play_url"], valid_file_name)
-	return("Download complete!")
+        stream_url = streams[quality].url
+        subprocess.run(['ffmpeg', '-i', stream_url, '-c', 'copy', filename+'.mp4'])
+    
+    elif 'kick' in url:
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            with open(filename+'.mp4', 'wb') as f:
+                f.write(response.content)
+            print(f"Video downloaded and saved as {filename+'.mp4'}")
+        else:
+            print(f"Failed to download the video. Status code: {response.status_code}")
+
+    return("Download complete!")

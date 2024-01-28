@@ -1,9 +1,32 @@
+from moviepy.editor import *
 import cv2
 from moviepy.editor import VideoFileClip, ImageClip, CompositeVideoClip
 
-def edit(filename):
-    # Define the input video file path
+def fullscreen(filename):
+    clip = VideoFileClip(f"{filename}.mp4")
+
+    template = ImageClip("template.png")
+
+    duration = 1
+
+    new_width = 1080
+    new_height = int(clip.size[1] * (new_width / clip.size[0]))
+
+    resized_clip = clip.resize((new_width, new_height))
+
+    x_pos = (template.size[0] - resized_clip.size[0]) // 2
+    y_pos = (template.size[1] - resized_clip.size[1]) // 2
+
+    composite_clip = CompositeVideoClip([template.set_duration(duration), resized_clip.set_pos((x_pos, y_pos)).set_duration(duration)])
+
+    composite_clip.write_videofile('cliptest.mp4', threads=6, codec="libx264")
+
+def facecam(filename):
+        # Define the input video file path
     input_file = f"{filename}.mp4"
+
+    # Define the output video file path
+    output_file = f".mp4"
 
     # Load the input video clip
     video_clip = VideoFileClip(input_file)
@@ -68,11 +91,8 @@ def edit(filename):
     # # Load the second video
     # gameplay = VideoFileClip("output_gameplay.mp4",audio=False)
 
-    final_clip = CompositeVideoClip([template.set_duration(resized_facecam.duration), final_clip.set_pos((0, 0)), resized_facecam.set_pos((0, 1300))])
+    final_clip = final_clip.subclip(0, 1)
 
-    final_clip.write_videofile(f".mp4", threads=6, codec="libx264")
-
+    final_clip = CompositeVideoClip([template.set_duration(1), final_clip.set_pos((0, 0)), resized_facecam.subclip(0, 1).set_pos((0, 1300))])
     
-    # final_clip = final_clip.set_duration(2).without_audio()
-
-    # final_clip.write_videofile('cliptest.mp4', threads=6, codec="libx264")
+    final_clip.write_videofile('cliptest.mp4', threads=6, codec="libx264")
