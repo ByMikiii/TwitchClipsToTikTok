@@ -82,7 +82,7 @@ def upload():
     tag2 = random.choice(hashtags)
     print(f"tags:{tag1} {tag2}")
 
-    upload_video('v.mp4', f"{tag1} {tag2} ", cookies='cookies.txt', headless=True, comment=True, stitch=True, duet=True)
+    upload_video('v.mp4', f"{tag1} {tag2}", cookies='cookies.txt', headless=True, comment=True, stitch=True, duet=True)
 
     file_path = os.path.join(os.getcwd(), ".mp4")
     if not os.path.isfile(file_path):
@@ -170,6 +170,7 @@ def upload_videos(videos: list = None, auth: AuthBackend = None, proxy: dict = N
 
         chrome_options = Options()
         chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--window-size=1920x1080") 
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
     else:
@@ -346,31 +347,38 @@ def _set_description(driver, description: str) -> None:
                 else:
                     desc.send_keys(name)
 
-                time.sleep(config['implicit_wait'])
+                time.sleep(8)
+                logger.debug(green('Hitting enter'))
+                desc.send_keys(Keys.RETURN)
+                time.sleep(4)
+            #     time.sleep(config['implicit_wait'])
 
-                if nearest_mention == 0: # @ case
-                    mention_xpath = config['selectors']['upload']['mentions'].format('@' + name)
-                    condition = EC.presence_of_element_located((By.XPATH, mention_xpath))
-                else:
-                    hashtag_xpath = config['selectors']['upload']['hashtags'].format(name)
-                    condition = EC.presence_of_element_located((By.XPATH, hashtag_xpath))
+            #     if nearest_mention == 0: # @ case
+            #         mention_xpath = config['selectors']['upload']['mentions'].format('@' + name)
+            #         condition = EC.presence_of_element_located((By.XPATH, mention_xpath))
+            #     else:
+            #         hashtag_xpath = config['selectors']['upload']['hashtags'].format(name)
+            #         condition = EC.presence_of_element_located((By.XPATH, hashtag_xpath))
 
-                # if the element never appears (timeout exception) remove the tag and continue
-                try:
-                    elem = WebDriverWait(driver, config['implicit_wait']).until(condition)
-                except:
-                    desc.send_keys(Keys.BACKSPACE * (len(name) + 1))
-                    description = description[len(name) + 2:]
-                    continue
+            #     # if the element never appears (timeout exception) remove the tag and continue
+            #     try:
+            #         elem = WebDriverWait(driver, config['implicit_wait']).until(condition)
+            #     except:
+            #         desc.send_keys(Keys.BACKSPACE * (len(name) + 1))
+            #         description = description[len(name) + 2:]
+            #         continue
 
-                # ActionChains(driver).move_to_element(elem).click(elem).perform()
+            #     # ActionChains(driver).move_to_element(elem).click(elem).perform()
 
-                description = description[len(name) + 2:]
-            else:
-                min_index = _get_splice_index(nearest_mention, nearest_hash, description)
+            description = description[len(name) + 2:]
+            # else:
+            #     min_index = _get_splice_index(nearest_mention, nearest_hash, description)
 
-                desc.send_keys(description[:min_index])
-                description = description[min_index:]
+            #     desc.send_keys(description[:min_index])
+            #     description = description[min_index:]
+            
+
+
     except Exception as exception:
         print('Failed to set description: ', exception)
         _clear(desc)
