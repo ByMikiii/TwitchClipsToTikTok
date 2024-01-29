@@ -347,10 +347,10 @@ def _set_description(driver, description: str) -> None:
                 else:
                     desc.send_keys(name)
 
-                time.sleep(8)
+                time.sleep(12)
                 logger.debug(green('Hitting enter'))
                 desc.send_keys(Keys.RETURN)
-                time.sleep(4)
+                time.sleep(8)
             #     time.sleep(config['implicit_wait'])
 
             #     if nearest_mention == 0: # @ case
