@@ -16,7 +16,7 @@ from moviepy.editor import VideoFileClip, ImageClip, CompositeVideoClip
 intents = discord.Intents.default()
 intents.messages = True
 # Create an instance of the bot
-bot = commands.Bot(command_prefix='/')
+bot = commands.Bot(command_prefix='/', intents=intents)
 
 # Event to run when the bot is ready
 @bot.event
